@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QuickMosaic | 高機能Webモザイク・加工ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ヘッダー -->
+        <header>
+            <div class="header-inner">
+                <h1>✨ QuickMosaic</h1>
+                <p>ブラウザ完結・安心安全。個人情報保護に特化したプロ仕様の画像加工ツール</p>
+            </div>
+        </header>
+
+        <!-- メインレイアウト -->
+        <div class="main-layout">
+            
+            <!-- 左側：サイドバー -->
+            <aside class="sidebar">
+                <!-- タブ -->
+                <div class="tabs">
+                    <button class="tab active" data-target="panel-brush">🖌️ ブラシ</button>
+                    <button class="tab" data-target="panel-stamp">😸 スタンプ</button>
+                    <button class="tab" data-target="panel-adjust">調整・効果</button>
+                </div>
+
+                <div class="panels-container">
+                    <!-- モザイク・ブラシ パネル -->
+                    <div id="panel-brush" class="panel active">
+                        <div class="brush-options">
+                            <div class="brush-option active" data-type="blur-strong">
+                                <div class="thumbnail" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div>
+                                <span>ふんわり</span>
+                            </div>
+                            <div class="brush-option" data-type="blur-light">
+                                <div class="thumbnail" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);"></div>
+                                <span>なでぼかし</span>
+                            </div>
+                            <div class="brush-option" data-type="mosaic-large">
+                                <div class="thumbnail" style="background: repeating-linear-gradient(45deg, #ccc, #ccc 6px, #eee 6px, #eee 12px);"></div>
+                                <span>モザイク</span>
+                            </div>
+                            <div class="brush-option" data-type="mosaic-small">
+                                <div class="thumbnail" style="background: repeating-linear-gradient(-45deg, #ddd, #ddd 3px, #fff 3px, #fff 6px);"></div>
+                                <span>すりガラス</span>
+                            </div>
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="size-slider">ペンの太さ</label>
+                                <span id="brush-size-val">40px</span>
+                            </div>
+                            <input type="range" id="size-slider" min="10" max="150" value="40">
+                        </div>
+                    </div>
+
+                    <!-- スタンプ パネル -->
+                    <div id="panel-stamp" class="panel hidden">
+                        <div class="stamp-grid" id="stamp-grid"></div>
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="stamp-slider">スタンプサイズ</label>
+                                <span id="stamp-size-val">100px</span>
+                            </div>
+                            <input type="range" id="stamp-slider" min="30" max="400" value="100">
+                        </div>
+                    </div>
+
+                    <!-- 調整・効果 パネル（新規便利機能） -->
+                    <div id="panel-adjust" class="panel hidden">
+                        <div class="adjust-group">
+                            <label>ワンクリック便利機能</label>
+                            <button id="btn-auto-mosaic-faces" class="btn-sub-action">🤖 顔っぽい場所を自動モザイク</button>
+                        </div>
+                        <div class="adjust-group">
+                            <div class="slider-header">
+                                <label for="brightness-slider">明るさ調整</label>
+                                <span id="brightness-val">0</span>
+                            </div>
+                            <input type="range" id="brightness-slider" min="-50" max="50" value="0">
+                        </div>
+                        <div class="adjust-group">
+                            <div class="slider-header">
+                                <label for="frame-select">外枠フレーム</label>
+                            </div>
+                            <select id="frame-select" class="styled-select">
+                                <option value="none">なし</option>
+                                <option value="simple">シンプルな細枠</option>
+                                <option value="shadow">ふんわり影つき</option>
+                                <option value="polaroid">ポラロイド風</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- アクションボタン -->
+                <div class="action-buttons hidden" id="action-area">
+                    <button id="btn-undo" class="btn-secondary">↩️ 元に戻す</button>
+                    <button id="btn-download" class="btn-primary">💾 保存する</button>
+                </div>
+
+                <!-- サイドバー下部（使い方） -->
+                <div class="sidebar-footer">
+                    <details>
+                        <summary> Webモザイクツールの使い方</summary>
+                        <div class="details-content">
+                            <p>見せたくない部分をなぞるだけで、ブラウザ上で安全にモザイクやぼかし、スタンプ加工ができるツールです。</p>
+                            <h4>便利な使い方</h4>
+                            <ol>
+                                <li>画像をドロップして読み込みます。</li>
+                                <li>隠したい部分をブラシやスタンプでなぞります。</li>
+                                <li>「調整・効果」から明るさ変更や枠線も追加できます。</li>
+                                <li>「保存する」で端末にダウンロードします。</li>
+                            </ol>
+                        </div>
+                    </details>
+                    <p class="privacy-note">
+                        🔒 画像はあなたの端末内だけで処理され、外部サーバーには一切送信されません。
+                    </p>
+                </div>
+            </aside>
+
+            <!-- 右側：ワークスペース -->
+            <main class="workspace">
+                <div id="drop-area" class="drop-area">
+                    <div class="drop-icon">📁</div>
+                    <button class="btn-select" onclick="document.getElementById('file-input').click()">
+                        ＋ 編集する画像を選択
+                    </button>
+                    <p>JPEG / PNG 画像に対応（ドラッグ＆ドロップもOK）</p>
+                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                </div>
+
+                <div id="canvas-container" class="canvas-container hidden">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </main>
+        </div>
+
+        <!-- シェア機能セクション -->
+        <div class="share-section">
+            <h3>🍻 先生仲間や友人にシェアする</h3>
+            <p>日々の授業プリントや資料作りに。SNSやメッセージアプリでの共有、大歓迎です！</p>
+            <div class="share-buttons">
+                <button id="share-x" class="share-btn btn-x">𝕏 X (Twitter)</button>
+                <button id="share-fb" class="share-btn btn-fb">f Facebook</button>
+                <button id="share-line" class="share-btn btn-line">LINE</button>
+                <button id="share-copy" class="share-btn btn-copy">🔗 リンクをコピー</button>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer class="app-footer">
+            <div class="footer-links">
+                <a href="https://sites.google.com/view/koheinakashima/bio" target="_blank" rel="noopener noreferrer">👤 開発者情報</a>
+                <a href="#" id="link-disclaimer">ℹ️ 免責事項</a>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 QuickMosaic
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- なぞる時の丸いカーソル -->
+    <div id="cursor-ring" class="cursor-ring"></div>
+
+    <script src="main.js"></script>
+</body>
+</html>
